@@ -110,9 +110,7 @@ Return code example:
 
 Use the `Jenkinsfile` provided in this repository to init, plan, apply and invoke your Lambda function.
 
-Create a new jenkins pipeline job and configure it to pull your forked project from GitHub.
-
-Create an additional pipeline, not from source code, to download the Terraform and AWS CLI executables that you will need in order to complete your exercise.
+Create a new jenkins pipeline job and configure it to pull your project from GitHub.
 
 **Remember**, the end goal in the Jenkins is that you will have a fully working pipeline that creates/synchronizes the infrastructure and to invoke your Lambda in the final stage. \
 Your Jenkins have the required IAM role to allow you to build your Terraform code and to invoke your Lambda. 
