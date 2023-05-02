@@ -141,7 +141,7 @@ Return code example:
 ### **Step 5 - Jenkins - Running your pipeline**
 
 Use the `Jenkinsfile` provided in this repository to init, plan, apply and invoke your Lambda function. \
-The end goal is that you will have a fully working pipeline that creates/synchronizes the infrastructure and that invoke your Lambda. \
+The end goal is that you will have a fully working pipeline that creates/synchronizes the infrastructure and that invoke your Lambda.
 
 ### **Step 6 - Verify you are done**
 
