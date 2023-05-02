@@ -12,45 +12,71 @@ In this hands-on exam we are going to test your knowledge and capabilities in th
 - AWS
 - Coding (Preferred Python)
 
+**Note to mention** that you may use the internet to complete your exercise.
+
 ## Exercise Details
 
-You are going to create a small infrastructure on AWS using Terraform.
-Your Terraform code will cover the creation of:
+You will create a small infrastructure on AWS using Terraform. \
+The ultimate objective of this exercise is to invoke your Lambda function against a remote API, which will receive a specific payload. \
+Once the remote API is triggered, an email containing the relevant information from your exercise will be sent to both you and us. \
+Please inform the local instructor about this so that we can verify if the email is received correctly.
+
+---
+
+## Exercise Steps
+
+### **Step 1 - GitHub**
+
+Please follow the steps below, but make sure **not to fork** this repository. If you fork the repository, other candidates will be able to view your results.
+
+* **Clone** this repository to your local machine
+* Setup your own GitHub account if you don't already have one
+* Create a public repo on your GitHub account (empty repo)
+* Update the git origin to point your own GitHub account repository. \
+  Example,
+    ```
+    git remote set-url origin https://github.com/<GitHub Account>/devops-candidate-exam.git
+    ```
+* Once you have updated the git origin try pushing the content from your local workspace to your remote git origin
+  * In case you are having trouble to modify the code locally and push it to GitHub via SSH, try using the HTTPS origin or upload your modified files via the GitHub Web UI.
+
+### **Step 2 - Jenkins**
+
+In this step you will:
+
+- Verify the access to your own personal Jenkins server.
+- Configure a declarative pipeline.
+- Validate that you are able to run the pipeline.
+
+Steps:
+
+* Contact your local instructor to get your personal Jenkins URL.
+  * The Jenkins URL is accessible via **HTTP** only
+* Create a new declarative pipeline and configure it to point your *Jenkinsfile* located on your publicly available GitHub repo.
+* Run your pipeline to verify you are able to access your repo and to reach to your remote *Jenkinsfile*
+
+Notes:
+
+In the provided Jenkins server we have already taken care of the following prerequisites,
+
+- **Terraform**
+- **AWS CLI**
+- **JQ**
+- **AWS IAM Role** that allows you to generate the resources and to invoke your Lambda. No need to specify a profile or creds in the pipeline.
+
+### **Step 3 - Terraform**
+
+In this step you will create the following resources in AWS using Terraform,
 
 * Private Subnet
 * Routing Table
-* Lambda Function
+* Lambda Function (Inside a VPC)
   * Security Group
 
 We will provide the *VPC ID*, *NAT Gateway ID*, *Lambda IAM Role & Policy*. \
 Check the [data.tf](https://github.com/jerasioren/devops-candidate-exam/blob/main/data.tf) for reference to those resources.
 
-Once your Terraform code is ready you'll be able to test it via a Jenkins pipeline that will execute it. \
-A Jenkins URL will be provided to you.
-
-**Note to mention** that you may use the internet to complete your exercise.
-
-The end goal of this exercise is to invoke your Lambda function against a remote API that receives a specific payload and to get a valid HTTP 200 return code status. \
-Our remote API will send us an email with the relevant information from your exercise. \
-When you reach to this state, please let the instructor know about it so we can check it on our end.
-
-## Instructions
-
-### Preparing your working environment 
-
-* **Clone** this repository to your local machine and then update the git origin to point your own GitHub account repository. Repository should be publicly accessible. \
-  Example,
-    ```
-    git remote set-url origin https://github.com/<GitHub Account>/devops-candidate-exam.git
-    ```
-  * We are requesting not to *fork* the project since other candidates will be able to view your results.
-  * In case you are having trouble to modify the code locally and push it to GitHub via SSH, try using the HTTPS origin or upload your modified files via the GitHub Web UI.
-* Make sure you are able to access the Jenkins UI using the link you got.
-* You'll be able to run the Terraform code only via the Jenkins pipeline. The Terraform & AWS CLI are pre-installed on your Jenkins instance. 
-    * No need to specify permission, Jenkins is running under AWS account with IAM role attached to it.
-
-### **Terraform**
-
+#### Configuring your Terraform backend:
 Use the following details to configure the AWS provider configuration. Pay attention that we are using S3 backend. 
 
 ```
@@ -60,9 +86,9 @@ Key: "<Your First Name>.<You Last Name>"
 ```
 
 Once you have created your S3 backend config you may try to perform Terraform init. \
-***NOTE**: Terraform init or any AWS CLI command can be executed only from the Jenkins pipeline.*
+> ***NOTE**: Terraform init or any AWS CLI command can be executed only from the Jenkins pipeline.*
 
-For the **Subnet** CIDR block please use 10.0.X.0/24 block, for example:
+For the **Private Subnet** CIDR block please use 10.0.X.0/24 block, for example:
 ```
 10.0.1.0/24
 10.0.2.0/24
@@ -74,16 +100,18 @@ For the **Subnet** CIDR block please use 10.0.X.0/24 block, for example:
 ```
 The VPC CIDR block is `10.0.0.0/16`. \
 We do not have any preference regarding the availability zone for the subnet. \
-If you will fail to create the subnet try using a different CIDR block.
+If the CIDR block is in use, select another one.
 
-#### **Lambda Code**
+Continue with writing the other resources and refer to **Step 4** for further instructions about the Lambda code.
 
-You should write code that will invoke a remote API endpoint. \
+### **Step 4 - Lambda Code**
+
+Your Lambda code should invoke a remote API endpoint. \
 You may use any language you wish, although we preferred it to be python.
 
 Your Lambda function should:
-- Run under your private subnet you have created.
-- Post a request to the following HTTPS endpoint:
+- Configure to run under a VPC using your private subnet you have created.
+- POST a request to the following HTTPS endpoint:
 `https://ij92qpvpma.execute-api.eu-west-1.amazonaws.com/candidate-email_serverless_lambda_stage/data`
   - You should use the following security header for the request to pass: \
   `{'X-Siemens-Auth': 'test'}` 
@@ -96,8 +124,9 @@ Your Lambda function should:
     }
     ```
     You should use real values in the payload.
+> `Note:` your Private Subnet ID value should come from the Terraform code instead of hard coded it.
 
-`Tip:` When you'r invoking your Lambda from the CLI, remember to add the following argument to the command **"--log-type Tail"**. This will return your **"LogResult"** which contain your actual post response in a base 64 format. You will need to convert it in order to view the actual endpoint response. When there is no execution error in the result, that means you are successfully invoked our Lambda. \
+> `Tip:` When you'r invoking your Lambda from the CLI, remember to add the following argument to the command **"--log-type Tail"**. This will return your **"LogResult"** which contain your actual post response in a base 64 format. You will need to convert it in order to view the actual endpoint response. When there is no execution error in the result, that means you have successfully invoked our API endpoint. \
 Return code example:
 ```json
 {
@@ -106,17 +135,24 @@ Return code example:
     "ExecutedVersion": "$LATEST"
 }
 ```
-### **Jenkins**
 
-Use the `Jenkinsfile` provided in this repository to init, plan, apply and invoke your Lambda function.
+> `Bonus Point`: Automatically convert the Lambda base64 response and write them to the console output in Jenkins.
 
-Create a new jenkins pipeline job and configure it to pull your project from GitHub.
+### **Step 5 - Jenkins - Running your pipeline**
 
-**Remember**, the end goal in the Jenkins is that you will have a fully working pipeline that creates/synchronizes the infrastructure and to invoke your Lambda in the final stage. \
-Your Jenkins have the required IAM role to allow you to build your Terraform code and to invoke your Lambda. 
+Use the `Jenkinsfile` provided in this repository to init, plan, apply and invoke your Lambda function. \
+The end goal is that you will have a fully working pipeline that creates/synchronizes the infrastructure and that invoke your Lambda. \
 
-***NOTE**: you are running inside a container without a persistent storage. Please avoid restarting your Jenkins, as this would cause you to start from scratch.
+### **Step 6 - Verify you are done**
 
-`Bonus Point`: Automatically convert the Lambda base64 response and write them to the console output in Jenkins.
+Check out your email inbox. when successfully invoking our API endpoint you should be receiving an email with the following structure:
+
+**Candidate's response:**
+| Field      | Value |
+| --- | --- |
+| subnet_id | xxx |
+| name | xxx |
+| email | xxx | 
+
 
 ## Good Luck!
