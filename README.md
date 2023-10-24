@@ -80,7 +80,7 @@ Check the [data.tf](https://github.com/jerasioren/devops-candidate-exam/blob/mai
 Use the following details to configure the AWS provider configuration. Pay attention that we are using S3 backend. 
 
 ```
-S3 Bucket: "3.devops.candidate.exam"
+S3 Bucket: "467.devops.candidate.exam"
 Region: "ap-south-1"
 Key: "<Your First Name>.<You Last Name>"
 ```

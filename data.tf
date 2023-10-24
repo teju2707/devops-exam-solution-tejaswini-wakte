@@ -1,9 +1,9 @@
 data "aws_nat_gateway" "nat" {
-  id = "nat-0d688bbff8a47b274"
+  id = "nat-0e15b21fa28393323"
 }
 
 data "aws_vpc" "vpc" {
-  id = "vpc-00bf0d10a6a41600c"
+  id = "vpc-06b326e20d7db55f9"
 }
 
 data "aws_iam_role" "lambda" {
