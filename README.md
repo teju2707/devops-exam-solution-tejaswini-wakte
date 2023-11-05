@@ -35,7 +35,7 @@ Please follow the steps below, but make sure **not to fork** this repository. If
 * Update the git origin to point your own GitHub account repository. \
   Example,
     ```
-    git remote set-url origin https://github.com/<GitHub Account>/devops-candidate-exam.git
+    git remote set-url origin https://github.com/<GitHub Account>/devops-exam.git
     ```
 * Once you have updated the git origin try pushing the content from your local workspace to your remote git origin
   * In case you are having trouble to modify the code locally and push it to GitHub via SSH, try using the HTTPS origin or upload your modified files via the GitHub Web UI.
@@ -74,7 +74,7 @@ In this step you will create the following resources in AWS using Terraform,
   * Security Group
 
 We will provide the *VPC ID*, *NAT Gateway ID*, *Lambda IAM Role & Policy*. \
-Check the [data.tf](https://github.com/jerasioren/devops-candidate-exam/blob/main/data.tf) for reference to those resources.
+Check the [data.tf](https://github.com/jerasioren/devops-exam/blob/main/data.tf) for reference to those resources.
 
 #### Configuring your Terraform backend:
 Use the following details to configure the AWS provider configuration. Pay attention that we are using S3 backend. 
