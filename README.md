@@ -112,7 +112,7 @@ You may use any language you wish, although we preferred it to be python.
 Your Lambda function should:
 - Configure to run under a VPC using your private subnet you have created.
 - POST a request to the following HTTPS endpoint:
-`https://ij92qpvpma.execute-api.eu-west-1.amazonaws.com/candidate-email_serverless_lambda_stage/data`
+`https://bc1yy8dzsg.execute-api.eu-west-1.amazonaws.com/v1/data`
   - You should use the following security header for the request to pass: \
   `{'X-Siemens-Auth': 'test'}` 
   - The data payload must be as followed:
