@@ -76,6 +76,8 @@ In this step you will create the following resources in AWS using Terraform,
 We will provide the *VPC ID*, *NAT Gateway ID*, *Lambda IAM Role & Policy*. \
 Check the [data.tf](https://github.com/jerasioren/devops-exam/blob/main/data.tf) for reference to those resources.
 
+> **Important Note**: When using the provided IAM role for your Terraform, **you won’t be able to recreate (delete and create) your Lambda.** To do that, you’ll need to create a new Lambda, leaving the previous one untouched.
+
 #### Configuring your Terraform backend:
 Use the following details to configure the AWS provider configuration. Pay attention that we are using S3 backend. 
 
@@ -110,7 +112,7 @@ Your Lambda code should invoke a remote API endpoint. \
 You may use any language you wish, although we preferred it to be python.
 
 Your Lambda function should:
-- Configure to run under a VPC using your private subnet you have created.
+- Configure to run under a **VPC** using your private subnet you have created.
 - POST a request to the following HTTPS endpoint:
 `https://bc1yy8dzsg.execute-api.eu-west-1.amazonaws.com/v1/data`
   - You should use the following security header for the request to pass: \
@@ -154,5 +156,9 @@ Check out your email inbox. when successfully invoking our API endpoint you shou
 | name | xxx |
 | email | xxx | 
 
+### **Step 7 - Link to your GitHub repo**
+
+Share with us the link to your private GitHub repo, \
+so we can review your coding work.
 
 ## Good Luck!
