@@ -158,7 +158,7 @@ Check out your email inbox. when successfully invoking our API endpoint you shou
 
 ### **Step 7 - Link to your GitHub repo**
 
-Share with us the link to your private GitHub repo, \
+Share with us the link to your public GitHub repo, \
 so we can review your coding work.
 
 ## Good Luck!
