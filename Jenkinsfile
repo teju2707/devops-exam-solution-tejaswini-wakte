@@ -6,13 +6,6 @@ pipeline {
         S3_KEY = 'Tejaswini.wakte'
     }
     stages {
-        stage('Package Lambda') {
-            steps {
-                script {
-                    sh './package_lambda.sh'
-                }
-            }
-        }
         stage('TF Init') {
             steps {
                 script {
@@ -47,19 +40,24 @@ pipeline {
                     def invoke_command = "aws lambda invoke --function-name api_invoker --log-type Tail --query 'LogResult' --output text response.json | base64 -d"
                     def response = sh(script: invoke_command, returnStdout: true).trim()
                     echo "Lambda Response: ${response}"
-                    
-                    // Log the full response
-                    sh 'cat response.json'
                 }
             }
         }
     }
     post {
         success {
-            echo "Build Success - ${env.JOB_NAME} Build #${env.BUILD_NUMBER}"
+            emailext (
+                to: 'your.email@gmail.com',
+                subject: "Build Success - ${env.JOB_NAME} Build #${env.BUILD_NUMBER}",
+                body: "Good news! Your build succeeded.\n\nCheck console output at ${env.BUILD_URL} to view the results."
+            )
         }
         failure {
-            echo "Build Failed - ${env.JOB_NAME} Build #${env.BUILD_NUMBER}"
+            emailext (
+                to: 'your.email@gmail.com',
+                subject: "Build Failed - ${env.JOB_NAME} Build #${env.BUILD_NUMBER}",
+                body: "Unfortunately, your build failed.\n\nCheck console output at ${env.BUILD_URL} to view the results."
+            )
         }
     }
 }
