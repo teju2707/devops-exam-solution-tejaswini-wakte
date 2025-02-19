@@ -7,7 +7,7 @@ def lambda_handler(event, context):
     payload = {
         "subnet_id": subnet_id,
         "name": "Tejaswini Wakte",
-        "email": "jawaleteju@example.com"
+        "email": "jawaleteju@gmail.com"
     }
     headers = {
         'X-Siemens-Auth': 'test'
