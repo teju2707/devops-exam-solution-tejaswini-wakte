@@ -44,4 +44,20 @@ pipeline {
             }
         }
     }
+    post {
+        success {
+            emailext (
+                to: 'your.email@gmail.com',
+                subject: "Build Success - ${env.JOB_NAME} Build #${env.BUILD_NUMBER}",
+                body: "Good news! Your build succeeded.\n\nCheck console output at ${env.BUILD_URL} to view the results."
+            )
+        }
+        failure {
+            emailext (
+                to: 'your.email@gmail.com',
+                subject: "Build Failed - ${env.JOB_NAME} Build #${env.BUILD_NUMBER}",
+                body: "Unfortunately, your build failed.\n\nCheck console output at ${env.BUILD_URL} to view the results."
+            )
+        }
+    }
 }
