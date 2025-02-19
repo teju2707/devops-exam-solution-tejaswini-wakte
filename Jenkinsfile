@@ -40,24 +40,19 @@ pipeline {
                     def invoke_command = "aws lambda invoke --function-name api_invoker --log-type Tail --query 'LogResult' --output text response.json | base64 -d"
                     def response = sh(script: invoke_command, returnStdout: true).trim()
                     echo "Lambda Response: ${response}"
+                    
+                    // Log the full response
+                    sh 'cat response.json'
                 }
             }
         }
     }
     post {
         success {
-            emailext (
-                to: 'jawaleteju@gmail.com',
-                subject: "Build Success - ${env.JOB_NAME} Build #${env.BUILD_NUMBER}",
-                body: "Good news! Your build succeeded.\n\nCheck console output at ${env.BUILD_URL} to view the results."
-            )
+            echo "Build Success - ${env.JOB_NAME} Build #${env.BUILD_NUMBER}"
         }
         failure {
-            emailext (
-                to: 'jawaleteju@gmail.com',
-                subject: "Build Failed - ${env.JOB_NAME} Build #${env.BUILD_NUMBER}",
-                body: "Unfortunately, your build failed.\n\nCheck console output at ${env.BUILD_URL} to view the results."
-            )
+            echo "Build Failed - ${env.JOB_NAME} Build #${env.BUILD_NUMBER}"
         }
     }
 }
