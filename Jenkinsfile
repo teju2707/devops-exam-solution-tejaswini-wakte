@@ -6,6 +6,13 @@ pipeline {
         S3_KEY = 'Tejaswini.wakte'
     }
     stages {
+        stage('Package Lambda') {
+            steps {
+                script {
+                    sh './package_lambda.sh'
+                }
+            }
+        }
         stage('TF Init') {
             steps {
                 script {
