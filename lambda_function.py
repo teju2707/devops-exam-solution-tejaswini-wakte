@@ -6,7 +6,7 @@ def lambda_handler(event, context):
     subnet_id = os.getenv('SUBNET_ID')
     payload = {
         "subnet_id": subnet_id,
-        "name": "Your Full Name",
+        "name": "Tejaswini Wakte",
         "email": "your.email@example.com"
     }
     headers = {
